@@ -3,7 +3,7 @@ var HttpService = require("droopy-http"),
 	q = require("q");
 
 var MovieDbService = function (apiKey) {
-	this.baseUrl = config.movieDb.baseUrl;
+	this.baseUrl = "http://api.themoviedb.org/3";
 	this.apiKey = apiKey;
 };
 
