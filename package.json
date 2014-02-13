@@ -1,6 +1,6 @@
 {
-  "name": "droopy-movieDb",
-  "version": "0.0.0",
+  "name": "droopy-moviedb",
+  "version": "0.0.1",
   "description": "Wrapper for theMovieDb.org api",
   "main": "MovieDbService.js",
   "scripts": {
