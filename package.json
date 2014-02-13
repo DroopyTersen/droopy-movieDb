@@ -1,0 +1,28 @@
+{
+  "name": "droopy-movieDb",
+  "version": "0.0.0",
+  "description": "Wrapper for theMovieDb.org api",
+  "main": "MovieDbService.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DroopyTersen/droopy-movieDb.git"
+  },
+  "keywords": [
+    "droopy"
+  ],
+  "author": "Andrew Petersen",
+  "bugs": {
+    "url": "https://github.com/DroopyTersen/droopy-movieDb/issues"
+  },
+  "homepage": "https://github.com/DroopyTersen/droopy-movieDb",
+  "dependencies": {
+    "q": "~1.0.0",
+    "droopy-http": "~0.0.1"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
