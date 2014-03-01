@@ -2,7 +2,7 @@ var HttpService = require("droopy-http"),
 	format = require("util").format,
 	q = require("q");
 
-var MovieDbService = function (apiKey) {
+var MovieDbService = function(apiKey) {
 	this.baseUrl = "http://api.themoviedb.org/3";
 	this.apiKey = apiKey;
 };
@@ -15,30 +15,36 @@ MovieDbService.prototype.search = function(searchText) {
 };
 
 MovieDbService.prototype.searchForOne = function(searchText) {
-	var deferred = q.defer(),
-		self = this;
-	this.search(searchText).then(function(response){
-		if (response.results.length > 0 ) {
-			self.getFullMovie(response.results[0].id).then(deferred.resolve);
-		} else {
-			deferred.reject("NO RESULTS!! - " + searchText);
-		}
-	}).fail(deferred.reject);
-
-	return deferred.promise;
-
+	var self = this;
+	return this.search(searchText)
+		.then(function(response) {
+			if (response.results.length > 0) {
+				return self.getFullMovie(response.results[0].id);
+			} else {
+				throw new Error("NO RESULTS!! - " + searchText);
+			}
+		});
 };
 
 MovieDbService.prototype.getFullMovie = function(id) {
 	var appendToResponse = "append_to_response=casts,keywords,trailers,releases";
 	var url = format("%s/movie/%s?api_key=%s&%s", this.baseUrl, id, this.apiKey, appendToResponse);
-	return this.getJSON(url);
+	return this.getJSON(url)
+		.then(function(movie) {
+			movie.casts.cast.sort(function(a, b) {
+				return a.order <= b.order ? -1 : 1;
+			});
+			var usReleases = movie.releases.countries.filter(function(country) {
+				return country.iso_3166_1 === "US";
+			});
+			movie.mpaa = usReleases.length > 0 ? usReleases[0].certification : "NR";
+			return movie;
+		});
 };
 
 MovieDbService.prototype.getPerson = function(id) {
 	var appendToResponse = "append_to_response=credits";
 	var url = format("%s/person/%s?api_key=%s&%s", this.baseUrl, id, this.apiKey, appendToResponse);
-	console.log(url);
 	return this.getJSON(url);
 };
 
